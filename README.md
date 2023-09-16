@@ -1,4 +1,4 @@
-# Private-ec2
+# private-ec2
 
 # Terraform AWS VPC and Private EC2 Example
 
