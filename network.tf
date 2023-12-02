@@ -5,16 +5,16 @@ module "vpc" {
   name = local.name
   cidr = local.vpc_cidr
 
-  azs                          = local.azs
-  private_subnets              = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
-  public_subnets               = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + length(local.azs))]
-  create_database_subnet_group = false
-  manage_default_network_acl   = false
-  manage_default_route_table   = false
+  azs                           = local.azs
+  private_subnets               = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
+  public_subnets                = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + length(local.azs))]
+  create_database_subnet_group  = false
+  manage_default_network_acl    = false
+  manage_default_route_table    = false
   manage_default_security_group = false
 
-  enable_nat_gateway = true
-  single_nat_gateway = false
+  enable_nat_gateway     = true
+  single_nat_gateway     = false
   one_nat_gateway_per_az = false
 }
 
