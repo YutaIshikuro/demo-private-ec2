@@ -1,13 +1,22 @@
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.1.2"
+  version = "5.2.0"
 
-  name = local.name
-  cidr = local.vpc_cidr
+  create_vpc = true
+  name       = local.name
+  cidr       = local.vpc_cidr
 
-  azs                           = local.azs
-  private_subnets               = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
-  public_subnets                = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + length(local.azs))]
+  azs = local.azs
+  private_subnets = [
+    local.cidr_blocks["public_subnet_1"],
+    local.cidr_blocks["public_subnet_2"],
+    local.cidr_blocks["public_subnet_3"]
+  ]
+  public_subnets = [
+    local.cidr_blocks["private_subnet_1"],
+    local.cidr_blocks["private_subnet_2"],
+    local.cidr_blocks["private_subnet_3"]
+  ]
   create_database_subnet_group  = false
   manage_default_network_acl    = false
   manage_default_route_table    = false

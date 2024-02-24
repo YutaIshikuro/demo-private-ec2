@@ -24,7 +24,7 @@ module "ec2-instance" {
   iam_role_description        = "IAM role for EC2 instance"
   iam_role_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
-    SSMStartSession = aws_iam_policy.ssm_document.arn
+    SSMStartSession              = aws_iam_policy.ssm_document.arn
   }
 }
 
@@ -56,7 +56,8 @@ module "ec2_instance_01" {
   iam_role_description        = "IAM role for EC2 instance"
   iam_role_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
-    SSMStartSession = aws_iam_policy.ssm_document.arn
+    SSMStartSession              = aws_iam_policy.ssm_document.arn
+    aoss = aws_iam_policy.aoss.arn
   }
 }
 
@@ -88,6 +89,25 @@ resource "aws_iam_policy" "ssm_document" {
           "arn:aws:ec2:${local.region}:${data.aws_caller_identity.current.account_id}:instance/*",
           "arn:aws:ssm:*:*:document/AWS-StartSSHSession"
         ]
+      },
+    ]
+  })
+}
+
+
+resource "aws_iam_policy" "aoss" {
+  name        = "aoss"
+  path        = "/"
+  description = "aoss policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "aoss:*",
+        ]
+        Effect = "Allow"
+        Resource = ["*"]
       },
     ]
   })
